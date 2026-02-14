@@ -1,10 +1,14 @@
 import type { Metadata, Viewport } from 'next';
+import { GlobalHeader } from './components/global-header';
 import './globals.css';
 import { Providers } from './provider-groups/providers';
+import Script from 'next/script';
 
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export const metadata: Metadata = {
@@ -19,17 +23,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <head>
+      <body>
         <link
           rel="stylesheet"
-          as="style"
-          crossOrigin="anonymous"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
-      </head>
-      <body>
         <Providers>
-          <main id="app-wrapper">{children}</main>
+          <main id="app-wrapper">
+            <GlobalHeader />
+            <div id="app-content">{children}</div>
+          </main>
         </Providers>
       </body>
     </html>
