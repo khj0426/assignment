@@ -96,5 +96,5 @@ function BottomCTALabel({ selectedCourses }: { selectedCourses: Course[] }) {
   if (selectedCourses.length === 0) {
     return '신청하기';
   }
-  return `${selectedCourses.length}개 강의 신청하기`;
+  return `${selectedCourses.length}개 강의 담기`;
 }
