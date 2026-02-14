@@ -114,4 +114,4 @@ if (e instanceof ErrorResponse) {
 
 이떄 `Promise.allSettled`를 사용해, 특정 필터의 데이터가 오지 않더라도 나머지 필터의 데이터는 사용자에게 보여줄 수 있도록 합니다.
 
-<video controls src="화면 기록 2026-02-14 오후 1.15.07.mov" title="Title"></video>
+<video controls src="demo.mov" title="Title"></video>
