@@ -11,6 +11,7 @@ import { Role, type RoleType, type SignUpSchema, signUpSchema } from './schema';
 import { LabelWithInput } from '@/app/components/label-with-input';
 import { useLogin } from '@/app/(route)/(로그인)/login/hooks/use-login';
 import { useRouter } from 'next/navigation';
+import { BottomCTA } from '@/app/components/bottom-cta';
 
 export default function SignUpPage() {
   const {
@@ -145,13 +146,13 @@ export default function SignUpPage() {
         </RadioGroup>
       </Flex>
 
-      <Button
+      <BottomCTA
         type="submit"
         disabled={!isValid || isPending}
         style={{ marginTop: 'auto' }}
       >
         가입하기
-      </Button>
+      </BottomCTA>
     </Flex>
   );
 }
