@@ -1,3 +1,7 @@
-export default function Home() {
-  return <div>add a home page</div>;
+'use client';
+
+import { LoginRequire } from './components/login-auth-guard';
+
+export default function Page() {
+  return <LoginRequire />;
 }

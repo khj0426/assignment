@@ -7,6 +7,8 @@ interface Props extends PropsWithChildren {
   rejectFallback?: React.ReactNode;
 }
 
+import { ServiceError } from '@/app/components/service-error';
+
 export function QueryErrorBoundary({
   children,
   resetKeys,
@@ -16,9 +18,14 @@ export function QueryErrorBoundary({
     <QueryErrorResetBoundary>
       {({ reset }) => (
         <ErrorBoundary
-          fallback={rejectFallback}
           onReset={reset}
           resetKeys={resetKeys}
+          fallbackRender={({ resetErrorBoundary }) => {
+            if (rejectFallback) {
+              return <>{rejectFallback}</>;
+            }
+            return <ServiceError onRetry={resetErrorBoundary} />;
+          }}
         >
           {children}
         </ErrorBoundary>
