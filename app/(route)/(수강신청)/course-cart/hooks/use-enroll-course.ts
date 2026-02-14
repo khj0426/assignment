@@ -2,6 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { ErrorResponse, httpClient } from '@/lib/http-client';
 import { useToast } from '@/app/hooks/useToast';
 import { useRouter } from 'next/navigation';
+import { useEnrolledCourses } from '../../courses/hooks/use-enrolled-courses';
 
 interface EnrollmentSuccess {
   enrollmentId: number;
@@ -22,6 +23,7 @@ interface BatchEnrollmentResponse {
 export function useEnrollCourses() {
   const toast = useToast();
   const router = useRouter();
+  const { addEnrolledCourses } = useEnrolledCourses();
 
   return useMutation({
     mutationFn: (courseIds: number[]) =>
@@ -48,6 +50,9 @@ export function useEnrollCourses() {
 
       // 모든 강의가 실패한 경우가 아니면 수강 신청 완료 페이지로 이동
       if (success.length > 0) {
+        // useEnrolledCourses를 통해 상태 및 localStorage 업데이트
+        addEnrolledCourses(success.map((s) => s.courseId));
+
         router.push('/courses');
       }
     },

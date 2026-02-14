@@ -8,6 +8,7 @@ import { useLogin } from './hooks/use-login';
 import { type LoginSchema, loginSchema } from './schema';
 import { LabelWithInput } from '@/app/components/label-with-input';
 import { useRouter } from 'next/navigation';
+import { BottomCTA } from '@/app/components/bottom-cta';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -65,13 +66,13 @@ export default function LoginPage() {
         autoComplete="off"
       />
 
-      <Button
+      <BottomCTA
         type="submit"
         disabled={!isValid || isPending}
         style={{ marginTop: 'auto' }}
       >
         로그인
-      </Button>
+      </BottomCTA>
     </Flex>
   );
 }

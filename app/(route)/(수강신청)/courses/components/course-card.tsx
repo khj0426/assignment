@@ -10,6 +10,8 @@ import { cn } from '@/lib/utils';
 import { Flex } from '@/components/ui/flex';
 import { Users, CreditCard } from 'lucide-react';
 import { Course } from '../schema';
+import { useEnrolledCourses } from '../hooks/use-enrolled-courses';
+import { useMemo } from 'react';
 
 interface CourseCardProps {
   course: Course;
@@ -17,10 +19,22 @@ interface CourseCardProps {
   selected?: boolean;
 }
 export function CourseCard({ course, onClick, selected }: CourseCardProps) {
+
   const isFull = course.currentStudents >= course.maxStudents;
   const fillPercentage = (course.currentStudents / course.maxStudents) * 100;
 
   const cardAriaLabel = `${course.title}, 강사 ${course.instructorName}, 가격 ${course.price}원, ${course.currentStudents}명 수강 중`;
+
+  const { isEnrolled } = useEnrolledCourses()
+
+  const disabled = isFull || isEnrolled(course.id)
+
+  const badgeLabel = () => {
+    if (isEnrolled(course.id)) {
+      return '수강 중';
+    }
+    return isFull ? '마감' : '모집중';
+  }
 
   return (
     <Card
@@ -28,12 +42,12 @@ export function CourseCard({ course, onClick, selected }: CourseCardProps) {
         padding: '12px',
       }}
       tabIndex={0}
-      onClick={() => !isFull && onClick?.(course.id)}
+      onClick={() => !disabled && onClick?.(course.id)}
       className={cn(
         'group relative overflow-hidden border-zinc-800 bg-zinc-950 transition-all duration-300',
-        !isFull &&
+        !disabled &&
           'hover:border-violet-500/30 hover:shadow-lg hover:shadow-violet-900/10 focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:outline-none cursor-pointer',
-        isFull && 'opacity-50 cursor-not-allowed',
+        disabled && 'opacity-50 cursor-not-allowed',
         selected && 'border-violet-500 ring-1 ring-violet-500 bg-zinc-900',
       )}
       role="article"
@@ -46,19 +60,19 @@ export function CourseCard({ course, onClick, selected }: CourseCardProps) {
               {course.title}
             </CardTitle>
             <Badge
-              variant={isFull ? 'secondary' : 'default'}
+              variant={disabled ? 'secondary' : 'default'}
               style={{
                 padding: '4px',
               }}
               className={cn(
                 'shrink-0 font-semibold px-3 py-1 text-xs',
-                isFull
+                disabled
                   ? 'bg-zinc-800 text-zinc-400 border-zinc-700'
                   : 'bg-violet-950/50 text-violet-300 border border-violet-800/50 hover:bg-violet-900/50',
               )}
               aria-label={isFull ? '마감됨' : '모집중'}
             >
-              {isFull ? '마감' : '모집중'}
+              {badgeLabel()}
             </Badge>
           </Flex>
 
